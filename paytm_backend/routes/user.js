@@ -1,24 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const z = require('zod')
-const { User, Account } = require('../db')
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv');
-const { authMiddleware } = require('../middleware/middleware')
+const { authMiddleware } = require('../middleware/middleware');
+const { Account } = require('../schema/accountSchema');
+const { User } = require('../schema/userSchema');
+const { signupBody, updateBody } = require('../validation');
 
 dotenv.config();
-const signupBody = z.object({
-    username: z.string().email(),
-    password: z.string(),
-    firstName: z.string(),
-    lastName: z.string(),
-})
-
-const updateBody = z.object({
-    password: z.string().optional(),
-    firstName: z.string().optional(),
-    lastName: z.string().optional(),
-})
 
 router.post("/signin",async(req,res)=>{
     const{username,password}=req.body
